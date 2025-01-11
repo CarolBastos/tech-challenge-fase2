@@ -1,4 +1,4 @@
-import { UserLogin } from "@/app/interfaces";
+import { UserLogin } from "@/interfaces";
 
 export const users: UserLogin[] = [
   {

@@ -1,6 +1,5 @@
+import { Statement } from "@/interfaces";
 import { useEffect, useState } from "react";
-
-import { Statement } from "@/app/interfaces";
 
 const useStatement = () => {
   const [data, setData] = useState<Statement | null>(null);

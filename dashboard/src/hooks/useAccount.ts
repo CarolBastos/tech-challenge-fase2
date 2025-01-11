@@ -1,4 +1,4 @@
-import { User } from '@/app/interfaces';
+import { User } from '@/interfaces';
 import { useEffect, useState } from 'react';
 
 const useAccount = () => {

@@ -11,18 +11,6 @@ import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import ClientStatement from '@/components/userStatement/userStatement';
 
-// import Header from "../../components/header/header";
-// import Navbar from "../navbar/navbar";
-// import Balance from "../../components/balance/balance";
-// import NewTransaction from "../../components/new-transaction/new-transaction";
-
-// import  "./layout.scss";
-// import { statement } from "../../../mocks/statement";
-// import useAccount from '@/hooks/useAccount';
-// import Image from 'next/image';
-// import ClientStatement from '../userStatement/userStatement';
-// import { Transaction } from '@/app/interfaces';
-
 const LoggedInLayout: React.FC = () => {
   const { user, setUser } = useAccount();
   const [transactions, setTransactions] = useState(statement?.transactions.slice().reverse());

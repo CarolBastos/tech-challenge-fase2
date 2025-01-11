@@ -2,9 +2,9 @@
 
 import React, { useState } from 'react';
 import { EyeIcon, EyeOffIcon } from "@heroicons/react/solid";
-import { User } from '@/app/interfaces';
 import Image from "next/image";
 import CurrentDate from './current-date';
+import { User } from '@/interfaces';
 
 interface BalanceProps {
   user: User | null; 

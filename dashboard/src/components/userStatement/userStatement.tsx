@@ -1,7 +1,6 @@
 import { Transaction } from "@/interfaces";
 import { TransactionCard } from "../generics/TransactionCard";
 
-
 interface statementProp {
   transactions: Transaction[];
 }

@@ -1,12 +1,8 @@
 import { useState } from "react";
 import Image from "next/image";
-
 import { SelectOption, TransactionInput } from "./index";
 import { Transaction, TypesOfTransaction } from "@/interfaces";
 import Button from "../button/button";
-
-
-
 
 interface NewTransactionProps {
   balance: number ;
