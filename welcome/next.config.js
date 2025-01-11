@@ -1,4 +1,4 @@
-const { NextFederationPlugin } = require("@module-federation/nextjs-mf");
+const { NextFederationPlugin } = require('@module-federation/nextjs-mf');
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -7,17 +7,16 @@ const nextConfig = {
     const { isServer } = options;
     config.plugins.push(
       new NextFederationPlugin({
-        name: "app2",
-        remotes: {},
+        name: 'welcome',
         filename: "static/chunks/remoteEntry.js",
-        exposes: {
-          "./ModuleA": "./src/components/ModuleA",
+        remotes: {
+          header: `header@http://localhost:3001/_next/static/${isServer ? 'ssr' : 'chunks'}/remoteEntry.js`,
         },
-        shared: {},
       })
     );
+
     return config;
   },
-};
+}
 
-module.exports = nextConfig;
+module.exports = nextConfig
