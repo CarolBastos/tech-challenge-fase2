@@ -1,3 +1,140 @@
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
+
+/* Sobrescrevendo as cores customizadas */
+.bg-primary-500 {
+    background-color: #004D61 !important;
+}
+
+.bg-secondary-500 {
+    background-color: #FF5031 !important;
+}
+
+.bg-tertiary-500 {
+    background-color: #47A138 !important;
+}
+
+.bg-tertiary-400 {
+    background-color: #E4EDE3 !important;
+}
+
+.bg-tertiary-300 {
+    background-color: #DEE9EA !important;
+}
+
+.bg-neutral-400 {
+    background-color: #000000 !important;
+}
+
+.bg-neutral-300 {
+    background-color: #CBCBCB !important;
+}
+
+.bg-neutral-200 {
+    background-color: #F5F5F5 !important;
+}
+
+.bg-neutral-100 {
+    background-color: #FFFFFF !important;
+}
+
+/* Sobrescrevendo as cores de texto */
+.text-primary-500 {
+    color: #004D61 !important;
+}
+
+.text-secondary-500 {
+    color: #FF5031 !important;
+}
+
+.text-tertiary-500 {
+    color: #47A138 !important;
+}
+
+.text-tertiary-400 {
+    color: #E4EDE3 !important;
+}
+
+.text-tertiary-300 {
+    color: #DEE9EA !important;
+}
+
+.text-neutral-400 {
+    color: #000000 !important;
+}
+
+.text-neutral-300 {
+    color: #CBCBCB !important;
+}
+
+.text-neutral-200 {
+    color: #F5F5F5 !important;
+}
+
+.text-neutral-100 {
+    color: #FFFFFF !important;
+}
+
+/* Sobrescrevendo os tamanhos das fontes */
+.text-xxs {
+    font-size: 0.75rem !important;
+    /* 12px */
+}
+
+.text-xs {
+    font-size: 0.875rem !important;
+    /* 14px */
+}
+
+.text-sm {
+    font-size: 1rem !important;
+    /* 16px */
+}
+
+.text-md {
+    font-size: 1.125rem !important;
+    /* 18px */
+}
+
+.text-lg {
+    font-size: 1.25rem !important;
+    /* 20px */
+}
+
+.text-xl {
+    font-size: 1.5625rem !important;
+    /* 25px */
+}
+
+.text-2xl {
+    font-size: 1.75rem !important;
+    /* 28px */
+}
+
+.text-3xl {
+    font-size: 1.938rem !important;
+    /* 31px */
+}
+
+/* Sobrescrevendo as larguras máximas */
+.max-w-sm {
+    max-width: 19.5rem !important;
+}
+
+.max-w-md {
+    max-width: 37.5rem !important;
+}
+
+.max-w-lg {
+    max-width: 75rem !important;
+}
+
+.max-w-hero {
+    max-width: 27.125rem !important;
+}
+
+/* Sobrescrevendo a fonte */
+.font-inter {
+    font-family: "Inter", sans-serif !important;
+}
