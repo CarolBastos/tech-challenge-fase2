@@ -1,42 +1,26 @@
-import { NextResponse } from "next/server";
+import { NextApiRequest, NextApiResponse } from "next";
 import { statement } from "@/mocks/statement";
 
-export async function DELETE(request: Request, { params }: { params: { id: string } }) {
-  try {
-    const id = parseInt(params.id);
-    const index = statement.transactions.findIndex((t) => t.id === id);
+export default function handler(req: NextApiRequest, res: NextApiResponse) {
+  const id = parseInt(req.query.id as string);
+  const transactionIndex = statement.transactions.findIndex((t) => t.id === id);
 
-    if (index === -1) {
-      return NextResponse.json({ error: "Transaction not found" }, { status: 404 });
-    }
-
-    const deletedTransaction = statement.transactions.splice(index, 1)[0];
-    return NextResponse.json(deletedTransaction);
-  } catch (error) {
-    return NextResponse.json(
-      { error: "Internal Server Error" },
-      { status: 500 }
-    );
+  if (transactionIndex === -1) {
+    return res.status(404).json({ error: "Transaction not found" });
   }
-}
 
-export async function PATCH(request: Request, { params }: { params: { id: string } }) {
-  try {
-    const id = parseInt(params.id);
-    const transaction = statement.transactions.find((t) => t.id === id);
+  switch (req.method) {
+    case "DELETE":
+      const deletedTransaction = statement.transactions.splice(transactionIndex, 1)[0];
+      return res.status(200).json(deletedTransaction);
 
-    if (!transaction) {
-      return NextResponse.json({ error: "Transaction not found" }, { status: 404 });
-    }
+    case "PATCH":
+      const updatedTransaction = { ...statement.transactions[transactionIndex], ...req.body };
+      statement.transactions[transactionIndex] = updatedTransaction;
+      return res.status(200).json(updatedTransaction);
 
-    const body = await request.json();
-    Object.assign(transaction, body);
-
-    return NextResponse.json(transaction);
-  } catch (error) {
-    return NextResponse.json(
-      { error: "Internal Server Error" },
-      { status: 500 }
-    );
+    default:
+      res.setHeader("Allow", ["DELETE", "PATCH"]);
+      return res.status(405).end(`Method ${req.method} Not Allowed`);
   }
 }
