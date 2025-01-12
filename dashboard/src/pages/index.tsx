@@ -10,6 +10,7 @@ import { statement } from '@/mocks/statement';
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import ClientStatement from '@/components/userStatement/userStatement';
+import InvestmentSummary from '@/components/Investments/InvestmentSummary';
 
 const LoggedInLayout: React.FC = () => {
   const { user, setUser } = useAccount();
@@ -43,6 +44,7 @@ const LoggedInLayout: React.FC = () => {
 
           <div className="w-full flex flex-col gap-6 pb-6">
             <Balance user={user} />
+            <InvestmentSummary />
             <NewTransaction updateBalance={updateBalance} updateStatement={updateStatement}balance={user ? user.balance : 0}/>
           </div>
 
