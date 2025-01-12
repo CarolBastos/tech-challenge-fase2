@@ -5,6 +5,7 @@ import React, { FormEvent, useState } from "react";
 import Image from "next/image";
 import { InputForm } from "../generics/InputForm";
 import { useRouter } from "next/navigation";
+import http from "@/http";
 
 interface IUserRegisterForm {
   viewUserRegisterForm: boolean;
@@ -21,7 +22,7 @@ export const UserRegisterForm = ({
   onClose,
 }: IUserRegisterForm) => {
   const router = useRouter();
-  const [name, setName] = useState<string>("");
+  const [username, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [terms, setTerms] = useState<boolean>(false);
@@ -36,39 +37,34 @@ export const UserRegisterForm = ({
     onClose(false);
   };
 
-  const handleSubmit = async (e: FormEvent) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
 
-    const res = await fetch("/api/create-account", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ name, email, password, terms }),
-    });
-
-    const data = await res.json();
-    if (res.ok) {
-      setResponse({
-        message: "Cadastro realizado com sucesso!",
-        error: false,
-      });
-      router.push("/perfil");
-    } else {
-      setResponse({
-        message: data.error || "Erro ao criar conta.",
-        error: true,
-      });
-    }
+    http.post('/user', {username, email, password}).then(()=>{
+        setResponse({
+          message: "Cadastro realizado com sucesso!",
+          error: false,
+        });
+        setName("");
+        setEmail("");
+        setPassword("");
+        setTerms(false);
+        }).catch((error) => {
+          setResponse({
+            message: error.response?.data?.message || "Ocorreu um erro ao realizar o cadastro.",
+            error: true,
+          });
+        }    
+        )
   };
 
   return (
     <>
       {viewUserRegisterForm && (
-        <div className="fixed inset-0 bg-modal-100 bg-opacity-50 flex justify-center items-center z-50 px-6 m-0 max-h-screen overflow-y-auto">
+        <div className="fixed inset-0 bg-modal-100 bg-opacity-50 flex justify-center items-center z-50 px-6 m-0 min-h-modal max-h-modal max-w-md overflow-y-auto">
           <form
             onSubmit={handleSubmit}
-            className="w-full max-w-lg bg-stone-50 max-h-screen flex flex-col gap-8 py-8 px-6 relative"
+            className="max-w-lg bg-stone-50 min-h-modal max-h-modal flex flex-col gap-8 py-8 px-6 relative"
           >
             <button
               className="absolute right-4 top-4"
@@ -133,7 +129,7 @@ export const UserRegisterForm = ({
               <InputForm
                 label="Nome"
                 placeholder="Digite seu nome completo"
-                value={name}
+                value={username}
                 onChange={(e) => setName(e.target.value)}
                 required
               />

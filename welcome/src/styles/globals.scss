@@ -145,6 +145,14 @@
   max-width: 27.125rem !important;
 }
 
+.min-h-modal {
+  min-height: 80vh;
+}
+
+.max-h-modal {
+  max-height: 90vh;
+}
+
 /* Sobrescrevendo a fonte */
 .font-inter {
   font-family: "Inter", sans-serif !important;

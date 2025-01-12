@@ -14,7 +14,7 @@ const WelcomeLayout: React.FC = ({}) => {
   const [viewUserRegisterForm, setUserRegisterForm] = useState(false);
 
   return (
-    <div className="h-screen max-h-screen flex flex-col">
+    <div className="h-screen max-h-screen flex flex-col items-center">
       <WelcomeHeader
         onViewLoginForm={() => setViewLoginForm(true)}
         onViewUserRegisterForm={() => setUserRegisterForm(true)}

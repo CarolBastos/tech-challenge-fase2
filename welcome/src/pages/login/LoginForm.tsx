@@ -5,6 +5,7 @@ import React, { FormEvent, useState } from "react";
 import Image from "next/image";
 import { InputForm } from "../generics/InputForm";
 import { useRouter } from "next/navigation";
+import http from "@/http";
 
 interface ILoginForm {
   viewLoginForm: boolean;
@@ -29,31 +30,21 @@ export const LoginForm = ({ viewLoginForm, onClose }: ILoginForm) => {
     e.preventDefault();
     setMessage("");
 
-    try {
-      const res = await fetch("/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
-
-      const data = await res.json();
-
-      if (res.ok) {
-        setMessage(data.message);
-        router.push("/perfil");
-        handleClose();
-      } else {
-        setMessage(data.message);
-      }
-    } catch (error) {
-      setMessage("Erro ao conectar com o servidor.");
-    }
+    http.post('/user/auth', {email, password}).then((response)=>{
+      setMessage("Login realizado com sucesso!");
+      setEmail("");
+      setPassword("");
+      localStorage.setItem('token', response.data.result.token);
+      }).catch((error) => {
+        setMessage(error.response?.data?.message || "Ocorreu um erro ao realizar o login.");
+      }    
+      )
   };
 
   return (
     <>
       {viewLoginForm && (
-        <div className="fixed inset-0 bg-modal-100 bg-opacity-50 flex justify-center items-center z-50 px-6 h-full">
+        <div className="fixed inset-0 bg-modal-100 bg-opacity-50 flex justify-center items-center z-50 px-6 min-h-modal max-h-modal max-w-md">
           <form
             onSubmit={handleSubmit}
             className="w-full max-w-[792px] bg-stone-50 h-full flex flex-col gap-8 py-8 md:px-28 px-8 relative overflow-y-auto"
