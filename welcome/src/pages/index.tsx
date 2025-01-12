@@ -1,20 +1,15 @@
-import dynamic from "next/dynamic";
 import styles from "@/styles/Home.module.css";
+import WelcomeLayout from "./Layout/WelcomeLayout";
 
-const ModuleA = dynamic(() => import("header/ModuleA"), {
-  ssr: false,
-});
+
 
 export default function Home() {
   return (
     <>
-      <main className={styles.main}>
-        <ModuleA />
-        <nav>
-          <h2>Welcome Menu</h2>
-        </nav>
-        
-        <footer>Welcome Footer</footer>
+      <main className="w-full bg-tertiary-400 max-[1023px]:pb-9">
+        <body>
+        <WelcomeLayout />
+        </body>
       </main>
     </>
   );
