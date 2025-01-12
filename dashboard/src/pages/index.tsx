@@ -16,10 +16,9 @@ const LoggedInLayout: React.FC = () => {
   const { user, setUser } = useAccount();
   const [transactions, setTransactions] = useState(statement?.transactions.slice().reverse());
 
-  // Monitora as mudanças no `statement` e atualiza `transactions`
-    useEffect(() => {
-        setTransactions(statement?.transactions.slice().reverse());
-    }, [statement]);
+  useEffect(() => {
+    setTransactions(statement?.transactions.slice().reverse());
+  }, [statement]);
 
   const updateBalance = (transactionAmount: number): void => {
     if (user) {
