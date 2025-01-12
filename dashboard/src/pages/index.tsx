@@ -64,7 +64,11 @@ const LoggedInLayout: React.FC = () => {
 
   return (
     <div>
-      <Header userName={user?.name} />
+      
+      {user ? (
+        <Header userName={user.name} />
+      ) : (" ")}
+      
       <main className="w-full bg-tertiary-400 max-[1023px]:pb-9"> 
         <section className="max-w-sm h-full flex flex-col mx-auto pt-6 md:max-w-md gap-8 lg:max-w-lg lg:flex-row lg:px-6">
           <div className="main-logged__side-menu">
