@@ -1,15 +1,18 @@
+import React, { useEffect, useState, useCallback } from "react";
 import { Transaction } from "@/interfaces";
 import { TransactionCard } from "../generics/TransactionCard";
 
-interface statementProp {
+interface StatementProps {
   transactions: Transaction[];
 }
-export default function ClientStatement({ transactions }: statementProp) {
+
+export default function ClientStatement({ transactions }: StatementProps) {
+
   function convertDate(date: string): string {
     const year = date.slice(0, 4);
     const month = date.slice(5, 7);
     const day = date.slice(8, 10);
-    return day + "/" + month + "/" + year;
+    return `${day}/${month}/${year}`;
   }
 
   function getMonth(date: string): string {
@@ -28,7 +31,7 @@ export default function ClientStatement({ transactions }: statementProp) {
     <div>
       <ul>
         {transactions?.map((transaction, index) => (
-          <li key={index} className={`${index > 0 ? 'pt-6' : ''}`}>
+          <li key={transaction.id} className={`${index > 0 ? 'pt-6' : ''}`}>
             <TransactionCard
               month={getMonth(transaction.date)}
               date={convertDate(transaction.date)}
