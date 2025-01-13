@@ -1,7 +1,4 @@
-import styles from "@/styles/Home.module.css";
 import WelcomeLayout from "./Layout/WelcomeLayout";
-
-
 
 export default function Home() {
   return (

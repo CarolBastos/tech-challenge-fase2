@@ -1,5 +1,5 @@
 export type User = {
-  id: number;
+  id: string;
   name: string;
   balance: number;
 };
@@ -29,3 +29,4 @@ export type UserLogin = {
   name: string;
   terms: boolean;
 };
+
