@@ -1,10 +1,14 @@
   import { useState } from "react";
   import Image from "next/image";
   import { DateInput, SelectTypeTransaction, TransactionInput } from "./index";
-  import { TypesOfTransaction } from "@/interfaces";
+  import { SearchTransaction, TypesOfTransaction } from "@/interfaces";
   import Button from "../button/button";
+  
+  interface StatementAreaProps {
+    onSearch: (searchValues: SearchTransaction) => void;
+  }
 
-  export default function StatementArea() {
+  export default function StatementArea({ onSearch }: StatementAreaProps) {
     const [transactionValue, setTransactionValue] = useState<string>("");
     const [dateTransaction, setDateTransaction] = useState<string>("");
     const [isFilled, setIsFilled] = useState(false);
@@ -15,13 +19,13 @@
       setTransactionValue(value);
     };
 
-    function descriptionHandler(description: string): TypesOfTransaction {
-      if (description == 'Empréstimo e Financiamento') {
-        return TypesOfTransaction.Deposito
-      } else if (description == 'DOC/TED') {
-        return TypesOfTransaction.Transferencia
+    function descriptionHandler(description: string): string {
+      if (description == TypesOfTransaction.Deposito) {
+        return 'Credit'
+      } else if (description == TypesOfTransaction.Transferencia) {
+        return 'Debit'
       } else {
-        return TypesOfTransaction.Deposito
+        return 'Debit'
       }
     }
 
@@ -32,7 +36,6 @@
     const handleClick = async () => {
       if (!!selectedType || !!transactionValue || !!dateTransaction) {
         setIsFilled(true);
-        return;
       }
 
       const transactionValueFormatted = replaceCommaWithDot(transactionValue);
@@ -40,11 +43,13 @@
 
       const description = descriptionHandler(selectedType)
 
-      const searchValues = {
+      const searchValues : SearchTransaction = {
         value: amount,
         description,
         date: dateTransaction
       }
+
+      onSearch(searchValues)
     };
 
     const handleChangeDate = (event: React.ChangeEvent<HTMLInputElement>) => {

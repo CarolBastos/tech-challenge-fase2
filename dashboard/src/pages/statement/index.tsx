@@ -4,7 +4,7 @@ import Header from '@/components/header/header';
 import Navbar from '@/components/navbar/navbar';
 import { StatementArea } from '@/components/statement-area';
 import useAccount from '@/hooks/useAccount';
-import { Transaction } from '@/interfaces';
+import { SearchTransaction, Transaction, TypesOfTransaction } from '@/interfaces';
 import { statement } from '@/mocks/statement';
 import React, { useCallback, useEffect, useState } from 'react';
 import Image from 'next/image';
@@ -13,12 +13,14 @@ import ClientStatement from '@/components/userStatement/userStatement';
 const LoggedInLayout: React.FC = () => {
   const { user, setUser } = useAccount();
   const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [filteredTransactions, setFilteredTransactions] = useState<Transaction[]>(transactions);
   const [loading, setLoading] = useState<boolean>(false);
   const [allTransactionsLoaded, setAllTransactionsLoaded] = useState<boolean>(false);
   const transactionsLoadInitially = 6;
 
   useEffect(() => {
     setTransactions(statement.transactions.slice(0, transactionsLoadInitially));
+    setFilteredTransactions(statement.transactions.slice(0, transactionsLoadInitially))
   }, [])
 
   const handleScroll = useCallback((event: React.UIEvent<HTMLDivElement>) => {
@@ -48,6 +50,44 @@ const LoggedInLayout: React.FC = () => {
     setLoading(false);
   }, [transactions.length, transactionsLoadInitially]);
 
+  function descriptionHandler(description: string): string {
+    if (description == TypesOfTransaction.Deposito) {
+      return 'Credit'
+    } else if (description == TypesOfTransaction.Transferencia) {
+      return 'Debit'
+    } else {
+      return 'Debit'
+    }
+  }
+
+  const filterTransactions = (searchValues: SearchTransaction) => {
+    let filteredTransactions = transactions;
+
+    if (searchValues.value > 0) {
+      filteredTransactions = filteredTransactions.filter(
+        transaction => transaction.amount === searchValues.value
+      );
+    }
+
+    if (searchValues.description.trim() !== '') {
+      filteredTransactions = filteredTransactions.filter(
+
+        transaction => {
+          let desc = descriptionHandler(transaction.description)
+          return desc === searchValues.description
+        }
+      );
+    }
+
+    if (searchValues.date.trim() !== '') {
+      filteredTransactions = filteredTransactions.filter(
+        transaction => transaction.date === searchValues.date
+      );
+    }
+
+    setFilteredTransactions(filteredTransactions);
+  };
+
   return (
     <div>
       <Header userName={user?.name} />
@@ -58,7 +98,7 @@ const LoggedInLayout: React.FC = () => {
           </div>
 
           <div className="w-full flex flex-col gap-6 pb-6">
-            <StatementArea />
+            <StatementArea onSearch={filterTransactions} />
           </div>
 
           <div className="main-logged lg:w-[282px] md:w-full h-[650px] px-6 py-8 bg-neutral-200 rounded-lg">
@@ -77,7 +117,7 @@ const LoggedInLayout: React.FC = () => {
             </div>
             <div className='flex flex-col gap-6 overflow-y-auto pr-2 custom-scroll' onScroll={handleScroll} >
               <ClientStatement
-                transactions={transactions}
+                transactions={filteredTransactions}
               />
               {loading && (
                 <p className="text-center text-sm text-gray-500 mt-4 animate-pulse">

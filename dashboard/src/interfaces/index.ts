@@ -30,3 +30,8 @@ export type UserLogin = {
   terms: boolean;
 };
 
+export type SearchTransaction = {
+  value: number,
+  description: string,
+  date: string
+};

@@ -31,9 +31,8 @@ const SelectTypeTransaction: React.FC<SelectTypeTransactionProps> = ({
     <option value="" disabled hidden>
       Escolha o tipo
     </option>
-    <option value="Câmbio de Moeda">Câmbio de Moeda</option>
-    <option value="DOC/TED">DOC/TED</option>
-    <option value="Empréstimo e Financiamento">Empréstimo e Financiamento</option>
+    <option value="depósito">Depósito</option>
+    <option value="transferência">Transferência</option>
   </select>
 </div>
     );
