@@ -28,7 +28,7 @@ const SelectTypeTransaction: React.FC<SelectTypeTransactionProps> = ({
     onChange={onChange}
     placeholder="Selecione"
   >
-    <option value="" disabled hidden>
+    <option value="">
       Escolha o tipo
     </option>
     <option value="depósito">Depósito</option>

@@ -9,6 +9,7 @@ import { statement } from '@/mocks/statement';
 import React, { useCallback, useEffect, useState } from 'react';
 import Image from 'next/image';
 import ClientStatement from '@/components/userStatement/userStatement';
+import { descriptionHandler, formattedDate } from '@/utils';
 
 const LoggedInLayout: React.FC = () => {
   const { user, setUser } = useAccount();
@@ -50,14 +51,8 @@ const LoggedInLayout: React.FC = () => {
     setLoading(false);
   }, [transactions.length, transactionsLoadInitially]);
 
-  function descriptionHandler(description: string): string {
-    if (description == TypesOfTransaction.Deposito) {
-      return 'Credit'
-    } else if (description == TypesOfTransaction.Transferencia) {
-      return 'Debit'
-    } else {
-      return 'Debit'
-    }
+  const resetTransactions = () => {
+    setFilteredTransactions(transactions)
   }
 
   const filterTransactions = (searchValues: SearchTransaction) => {
@@ -81,7 +76,9 @@ const LoggedInLayout: React.FC = () => {
 
     if (searchValues.date.trim() !== '') {
       filteredTransactions = filteredTransactions.filter(
-        transaction => transaction.date === searchValues.date
+        transaction => {
+          return  formattedDate(transaction.date) === searchValues.date
+        }
       );
     }
 
@@ -98,7 +95,7 @@ const LoggedInLayout: React.FC = () => {
           </div>
 
           <div className="w-full flex flex-col gap-6 pb-6">
-            <StatementArea onSearch={filterTransactions} />
+            <StatementArea onSearch={filterTransactions}  handleResetResult={resetTransactions} />
           </div>
 
           <div className="main-logged lg:w-[282px] md:w-full h-[650px] px-6 py-8 bg-neutral-200 rounded-lg">

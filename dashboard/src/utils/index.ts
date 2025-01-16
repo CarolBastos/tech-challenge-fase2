@@ -28,3 +28,26 @@ export const isValidEmail = (email: string): boolean => {
 
   return true;
 };
+
+export function descriptionHandler(description: string): string {
+  if (description == TypesOfTransaction.Deposito) {
+    return 'Credit'
+  } else if (description == TypesOfTransaction.Transferencia) {
+    return 'Debit'
+  } else {
+    return ''
+  }
+}
+
+export const formattedDate = (dateString: string) => {
+  const date = new Date(dateString);
+
+  // Formate a data para yyyy-MM-dd
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+
+  const formattedDate = `${year}-${month}-${day}`;
+
+  return formattedDate;
+}
