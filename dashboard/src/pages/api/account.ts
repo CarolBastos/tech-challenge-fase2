@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { User } from '@/interfaces';
 import { ResponseAccount } from '@/interfaces/response-account';
+import http from "@/http";
 
 export default async function handler(
   req: NextApiRequest,
@@ -8,29 +9,18 @@ export default async function handler(
 ) {
   if (req.method === 'GET') {
     try {
-      // const token = req.headers.authorization?.split(' ')[1];
-      const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFuZSBDYXJvbGluZSAzIiwiZW1haWwiOiJ0ZXN0ZTNAZ21haWwuY29tIiwicGFzc3dvcmQiOiIxMjMiLCJpZCI6IjY3OGJiOWNiNTFjY2U0ODhlZmEzM2QzYSIsImlhdCI6MTczNzIxMDMyMiwiZXhwIjoxNzM3MjUzNTIyfQ.NISQRuM854mcpFOwuoNBl8xE8YJ_BNEXxtHxYOUGi-Q"
-
-      if (!token) {
-        return res.status(401).json({ message: 'Token não fornecido' });
-      }
 
       const apiUrl = process.env.API_URL || 'http://localhost:8080';
-      console.log("apiUrl account.ts", apiUrl)
 
-      const response = await fetch(`${apiUrl}/account`, {
-        method: 'GET',
+      const response = await http.get<ResponseAccount>(`${apiUrl}/account`, {
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        }
+          Authorization: req.headers.authorization,
+        },
+        withCredentials: true,
       });
 
-      if (!response.ok) {
-        throw new Error('Erro ao buscar os dados da conta');
-      }
-
-      const account: ResponseAccount = await response.json();
+      const account: ResponseAccount = response.data;
       
       const userAccount: User[] = account.result.account.map((accountItem) => ({
         id: accountItem.id,

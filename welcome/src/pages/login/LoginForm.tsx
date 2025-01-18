@@ -33,7 +33,7 @@ export const LoginForm = ({ viewLoginForm, onClose }: ILoginForm) => {
     http.post('/user/auth', {email, password}).then((response)=>{
       setEmail("");
       setPassword("");
-      document.cookie = "auth_token=" + response.data.result.token + "; path=/; domain=localhost; secure; samesite=None";
+      document.cookie = "auth_token=" + response.data.result.token + "; path=/; domain=localhost; samesite=lax";
       //TODO: refatorar url após deploy para ambiente
       window.location.href = 'http://localhost:3003/';
       }).catch((error) => {

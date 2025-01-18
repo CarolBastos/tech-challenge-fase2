@@ -11,7 +11,8 @@ const cors = require('cors')
 app.use(Express.json())
 
 app.use(cors({
-    origin: '*'
+    origin: '*',
+    credentials: true,
 }))
 
 app.use(publicRoutes)
