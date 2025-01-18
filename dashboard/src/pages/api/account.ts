@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { User } from '@/interfaces';
 import { ResponseAccount } from '@/interfaces/response-account';
 import http from "@/http";
+import { serialize } from 'cookie';
 
 export default async function handler(
   req: NextApiRequest,
@@ -21,13 +22,25 @@ export default async function handler(
       });
 
       const account: ResponseAccount = response.data;
+
+      const result = response.data.result;
+      res.setHeader(
+        'Set-Cookie',
+        serialize('accountResult', JSON.stringify(result), {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === 'production',
+          sameSite: 'strict',
+          path: '/',
+          maxAge: 60 * 60 * 24, // 1 dia
+        })
+      );
       
       const userAccount: User[] = account.result.account.map((accountItem) => ({
         id: accountItem.id,
         name: account.result.cards.length > 0 ? account.result.cards[0].name : '',
         balance: 200 //TODO: não existe o saldo nesse endpoint              
       }));
-      
+
       return res.status(200).json(userAccount[0]);
 
     } catch (error) {
