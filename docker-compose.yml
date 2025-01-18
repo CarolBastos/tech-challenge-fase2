@@ -16,6 +16,7 @@ services:
       - "3003:3003"
     environment:
       NODE_ENV: development
+      API_URL: http://api_service:8080
 
   welcome:
     build: ./welcome

@@ -29,8 +29,11 @@ app.use((req, res, next) => {
 app.use(routes)
 
 connectDB().then(() => {
-    app.listen(8080, () => {
-        console.log('Servidor rodando na porta 8080');
+    // app.listen(8080, () => {
+    //     console.log('Servidor rodando na porta 8080');
+    // });
+    app.listen(8080, '0.0.0.0', () => {
+        console.log('API listening on port 8080');
     });
 });
 

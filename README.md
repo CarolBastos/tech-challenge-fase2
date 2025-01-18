@@ -119,6 +119,9 @@ root/
    If you removed or renamed this service in your compose file, you can run this command  
    with the `--remove-orphans` flag to clean it up.
    ```
+   Ou esse: 
+
+   ![alt text](image.png)
 
    Siga os passos abaixo para corrigir:
 
@@ -129,11 +132,10 @@ root/
       ``` 
    2. Inicie novamente os serviços:
       ```bash
-      docker-compose up
+      docker-compose up --build
       ``` 
 ---
 
----  
 ### **Observações**  
 - Certifique-se de que as portas 3000, 3003 e 8080 estejam livres antes de iniciar os containers.  
 
