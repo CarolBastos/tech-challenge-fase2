@@ -34,7 +34,7 @@ Antes de iniciar, certifique-se de ter instalado:
 
 ```plaintext
 root/
-├── api-tech-challenge/    # Diretório da API Node.js
+├── api-tech-challenge/    # Diretório da API Node.js (porta 8080)
 ├── dashboard/             # Microfrontend Dashboard (porta 3003)
 ├── welcome/               # Microfrontend Welcome (porta 3000)
 └── docker-compose.yml     # Configuração Docker Compose
@@ -59,7 +59,7 @@ root/
    docker-compose up --build
    ```  
 
-3. O Docker Compose fará o build das imagens e iniciará todos os serviços.  
+3. O Docker Compose fará o build das imagens e iniciará todos os serviços. 
 
 ---
 
@@ -96,6 +96,42 @@ root/
    ```bash
    docker system prune -a
    ```  
+
+- **Para listar os containers em execução**
+   ```bash
+   docker-compose ps
+   ```  
+
+- **Para acessar o shell do container**
+
+   Se precisar acessar o shell do container dashboard (por exemplo):
+
+   ```bash
+   docker exec -it dashboard sh
+   ``` 
+
+#### **Resolvendo erros de containers órfãos**
+   
+   Caso você encontre um erro como este:
+
+   ```
+   ⚠️ WARNING: Found orphan containers (`dashboard_front`) for this project.  
+   If you removed or renamed this service in your compose file, you can run this command  
+   with the `--remove-orphans` flag to clean it up.
+   ```
+
+   Siga os passos abaixo para corrigir:
+
+   1. Execute o comando para remover containers órfãos:
+
+      ```bash
+      docker-compose down --remove-orphans 
+      ``` 
+   2. Inicie novamente os serviços:
+      ```bash
+      docker-compose up
+      ``` 
+---
 
 ---  
 ### **Observações**  
