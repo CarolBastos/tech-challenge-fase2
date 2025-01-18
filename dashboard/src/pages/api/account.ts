@@ -9,13 +9,16 @@ export default async function handler(
   if (req.method === 'GET') {
     try {
       // const token = req.headers.authorization?.split(' ')[1];
-      const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFuZSBjYXJvbGluZSIsImVtYWlsIjoiYmFzdG9zQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoiMTIzIiwiaWQiOiI2Nzg0MTkzMzRjOTNlZmI2OTY5MTljZTkiLCJpYXQiOjE3MzY3MTg0MTAsImV4cCI6MTczNjc2MTYxMH0.zykcHCfNT4nqDyminY56Z8Furmd8k0isgt_luswLUwQ"
+      const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFuZSBDYXJvbGluZSAzIiwiZW1haWwiOiJ0ZXN0ZTNAZ21haWwuY29tIiwicGFzc3dvcmQiOiIxMjMiLCJpZCI6IjY3OGJiOWNiNTFjY2U0ODhlZmEzM2QzYSIsImlhdCI6MTczNzIxMDMyMiwiZXhwIjoxNzM3MjUzNTIyfQ.NISQRuM854mcpFOwuoNBl8xE8YJ_BNEXxtHxYOUGi-Q"
 
       if (!token) {
         return res.status(401).json({ message: 'Token não fornecido' });
       }
 
-      const response = await fetch('http://localhost:8080/account', {
+      const apiUrl = process.env.API_URL || 'http://localhost:8080';
+      console.log("apiUrl account.ts", apiUrl)
+
+      const response = await fetch(`${apiUrl}/account`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
