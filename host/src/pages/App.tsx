@@ -1,11 +1,11 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-
-import './index.scss'
+import './styles/globals.css'
 
 const Welcome = React.lazy(() => import('WelcomePage/WelcomeLayout'));
 const App = () => (
-  <div className="mt-10 text-3xl mx-auto max-w-6xl">
+  
+  <div className="w-full bg-tertiary-400 max-[1023px]:pb-9">
     <React.Suspense fallback='Loading...'>
       <Welcome />
     </React.Suspense>

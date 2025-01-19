@@ -105,3 +105,20 @@ a {
     color-scheme: dark;
   }
 }
+
+.cardColor {
+  background-color: #004D61;
+  color: white;
+}
+
+.max-w-lg {
+  max-width: 75rem !important;
+}
+
+.max-w-md {
+  max-width: 50rem !important;
+}
+
+.max-h-card {
+  max-height: 75rem;
+}

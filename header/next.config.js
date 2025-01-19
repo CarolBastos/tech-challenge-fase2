@@ -10,9 +10,7 @@ const nextConfig = {
         name: "header",
         remotes: {},
         filename: "static/chunks/remoteEntry.js",
-        exposes: {
-          "./ModuleA": "./src/components/ModuleA",
-        },
+        remotes: {Investment: "investment@http://localhost:8080/remoteEntry.js"},
         shared: {},
       })
     );

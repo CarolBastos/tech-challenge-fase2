@@ -6,7 +6,7 @@ const Dotenv = require('dotenv-webpack');
 const deps = require("./package.json").dependencies;
 
 const printCompilationMessage = require('./compilation.config.js');
-const { debug } = require("console");
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = (_, argv) => ({
   output: {
@@ -57,6 +57,15 @@ module.exports = (_, argv) => ({
         use: ["style-loader", "css-loader", "postcss-loader"],
       },
       {
+        test: /\.scss$/, // Para arquivos SCSS, se você usar Sass
+        use: [
+          MiniCssExtractPlugin.loader,  // Extrai CSS para um arquivo
+        'css-loader',  // Carrega o CSS
+        'postcss-loader',  // Aplica PostCSS
+        'sass-loader',  // Compila SCSS para CSS
+        ],
+      },
+      {
         test: /\.(ts|tsx|js|jsx)$/,
         exclude: /node_modules/,
         use: {
@@ -94,6 +103,9 @@ module.exports = (_, argv) => ({
     new HtmlWebPackPlugin({
       template: "./src/index.html",
     }),
-    new Dotenv()
+    new Dotenv(),
+    new MiniCssExtractPlugin({
+      filename: '[name].[contenthash].css',  // Nome do arquivo CSS extraído
+    }),
   ],
 });

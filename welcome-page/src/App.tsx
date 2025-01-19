@@ -1,7 +1,6 @@
-import React from 'react'
 import ReactDOM from 'react-dom/client'
 
-import './index.scss'
+import './styles/globals.css'
 import WelcomeLayout from './pages/Layout/WelcomeLayout'
 
 const App = () => (
