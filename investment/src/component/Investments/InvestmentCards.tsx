@@ -1,3 +1,4 @@
+import React from "react";
 import InvestmentCard from "./InvestmentCard";
 
 export default function InvestmentCards({ rendaFixa, rendaVariavel }: { rendaFixa: string; rendaVariavel: string }) {

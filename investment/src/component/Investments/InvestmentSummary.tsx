@@ -1,3 +1,4 @@
+import React from "react";
 import InvestmentCards from "./InvestmentCards";
 import InvestmentHeader from "./InvestmentHeader";
 import Statistics from "./Statistics";

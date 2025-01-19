@@ -1,1 +1,1 @@
-declare module 'Investment/Investment';
+declare module 'Investment/InvestmentSummary';

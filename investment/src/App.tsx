@@ -2,11 +2,11 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 
 import './index.scss'
-import Investment from './component/Investment'
+import InvestmentSummary from './component/Investments/InvestmentSummary'
 
 const App = () => (
-  <div className="mt-10 text-3xl mx-auto max-w-6xl">
-    <Investment></Investment>
+  <div>
+    <InvestmentSummary></InvestmentSummary>
   </div>
 )
 const rootElement = document.getElementById('app')

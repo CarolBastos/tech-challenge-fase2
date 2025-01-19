@@ -1,4 +1,6 @@
+import React from "react";
 import DoughnutChart from "../doughnut-chart/DoughnutChart";
+
 
 export default function Statistics() {
     return (

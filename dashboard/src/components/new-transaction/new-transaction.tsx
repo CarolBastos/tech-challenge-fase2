@@ -3,6 +3,7 @@ import Image from "next/image";
 import { SelectOption, TransactionInput } from "./index";
 import { Transaction, TypesOfTransaction } from "@/interfaces";
 import Button from "../button/button";
+import { useSelector } from "react-redux";
 
 interface NewTransactionProps {
   balance: number ;
@@ -25,6 +26,10 @@ export default function NewTransaction({ updateBalance, updateStatement, balance
     setHasError(false);
   };
 
+  const transactionsTypes = useSelector((state) => state.transactionTypes.types);
+  const transactionsNames = useSelector((state) => state.transactionsName.names);
+  console.log(transactionsTypes);
+
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     setTransactionValue(value);
@@ -36,11 +41,11 @@ export default function NewTransaction({ updateBalance, updateStatement, balance
 
   function descriptionHandler(description: string): TypesOfTransaction{
     if(description == 'Empréstimo e Financiamento'){
-      return TypesOfTransaction.Deposito
+      return transactionsTypes[0];
     } else if(description == 'DOC/TED'){
-      return TypesOfTransaction.Transferencia
+      return transactionsTypes[2];
     }else{
-      return TypesOfTransaction.Deposito
+      return transactionsTypes[0];
     }
   }
 
@@ -152,17 +157,17 @@ export default function NewTransaction({ updateBalance, updateStatement, balance
         </button>
         {isOpen && (
           <ul className="absolute w-full bg-neutral-100 -mt-4 rounded-lg border border-primary-500 z-30 md:max-w-[20.9375rem]">
-            <SelectOption value="Câmbio de Moeda" onClick={handleSelect}>
-              Câmbio de Moeda
+            <SelectOption value={transactionsNames[0]} onClick={handleSelect}>
+            {transactionsNames[0]}
             </SelectOption>
-            <SelectOption value="DOC/TED" onClick={handleSelect}>
-              DOC/TED
+            <SelectOption value={transactionsNames[1]} onClick={handleSelect}>
+            {transactionsNames[1]}
             </SelectOption>
             <SelectOption
-              value="Empréstimo e Financiamento"
+              value={transactionsNames[2]}
               onClick={handleSelect}
             >
-              Empréstimo e Financiamento
+              {transactionsNames[2]}
             </SelectOption>
           </ul>
         )}

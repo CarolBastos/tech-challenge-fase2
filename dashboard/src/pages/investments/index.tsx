@@ -10,7 +10,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import Image from 'next/image';
 import ClientStatement from '@/components/userStatement/userStatement';
 
-const InvestmentCard = React.lazy(() => import('Investment/Investment'));
+const InvestmentCard = React.lazy(() => import('Investment/InvestmentSummary'));
 
 const LoggedInLayout: React.FC = () => {
   const { user, setUser } = useAccount();
