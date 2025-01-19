@@ -3,15 +3,14 @@
 import Balance from '@/components/balance/balance';
 import Header from '@/components/header/header';
 import Navbar from '@/components/navbar/navbar';
-import { NewTransaction } from '@/components/new-transaction';
 import useAccount from '@/hooks/useAccount';
-import { Transaction, TypesOfTransaction } from '@/interfaces';
+import { Transaction } from '@/interfaces';
 import { statement } from '@/mocks/statement';
 import React, { useCallback, useEffect, useState } from 'react';
 import Image from 'next/image';
 import ClientStatement from '@/components/userStatement/userStatement';
-import { Provider } from 'react-redux';
-import store from '@/store';
+
+const InvestmentCard = React.lazy(() => import('Investment/InvestmentSummary'));
 
 const LoggedInLayout: React.FC = () => {
   const { user, setUser } = useAccount();
@@ -19,22 +18,14 @@ const LoggedInLayout: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [allTransactionsLoaded, setAllTransactionsLoaded] = useState<boolean>(false);
   const transactionsLoadInitially = 6;
+  const [isClient, setIsClient] = useState(false);
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   useEffect(() => {
     setTransactions(statement.transactions.slice(0, transactionsLoadInitially));
   }, [])
-
-  const updateBalance = (transactionAmount: number): void => {
-    if (user) {
-      setUser({ ...user, balance: transactionAmount });
-    }
-  };
-
-  const updateStatement = (transaction: Transaction): void => {
-    if (transactions) {
-      setTransactions((prevTransactions: any) => [transaction, ...prevTransactions]);
-    }
-  };
 
   const handleScroll = useCallback((event: React.UIEvent<HTMLDivElement>) => {
     const target = event.currentTarget;
@@ -75,10 +66,13 @@ const LoggedInLayout: React.FC = () => {
 
           <div className="w-full flex flex-col gap-6 pb-6">
             <Balance user={user} />
-            <Provider store = {store}>
-            <NewTransaction updateBalance={updateBalance} updateStatement={updateStatement}balance={user ? user.balance : 0}/>
-            </Provider>
-            
+            {isClient ? (
+            <React.Suspense fallback='Loading...'>
+            <InvestmentCard />
+            </React.Suspense>
+            ) : (
+                <div>Carregando...</div>
+            )}
           </div>
 
           <div className="main-logged lg:w-[282px] md:w-full h-[650px] px-6 py-8 bg-neutral-200 rounded-lg">

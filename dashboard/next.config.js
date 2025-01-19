@@ -1,7 +1,6 @@
-const { NextFederationPlugin } = require('@module-federation/nextjs-mf');
+const NextFederationPlugin = require('@module-federation/nextjs-mf').NextFederationPlugin;
 
-/** @type {import('next').NextConfig} */
-const nextConfig = {
+module.exports = {
   reactStrictMode: true,
   webpack(config, options) {
     const { isServer } = options;
@@ -9,11 +8,17 @@ const nextConfig = {
       new NextFederationPlugin({
         name: 'dashboard',
         filename: "static/chunks/remoteEntry.js",
+        remotes: {Investment: "investment@http://localhost:8081/remoteEntry.js"}
       })
     );
 
     return config;
   },
-}
-
-module.exports = nextConfig
+  devServer: {
+    port: 3003, // Porta onde o micro frontend ficará exposto
+    hot: true,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+    },
+  },
+};

@@ -1,22 +1,28 @@
-const { NextFederationPlugin } = require('@module-federation/nextjs-mf');
+const NextFederationPlugin = require('@module-federation/nextjs-mf').NextFederationPlugin;
 
-/** @type {import('next').NextConfig} */
-const nextConfig = {
+module.exports = {
   reactStrictMode: true,
-  webpack(config, options) {
-    const { isServer } = options;
-    config.plugins.push(
-      new NextFederationPlugin({
-        name: 'welcome',
-        filename: "static/chunks/remoteEntry.js",
-        remotes: {
-          header: `header@http://localhost:3001/_next/static/${isServer ? 'ssr' : 'chunks'}/remoteEntry.js`,
-        },
-      })
-    );
-
+  webpack(config, { isServer }) {
+    if (!isServer) {
+      config.plugins.push(
+        new NextFederationPlugin({
+          name: 'welcome', // Nome da aplicação consumidora
+          filename: 'static/chunks/remoteEntry.js',
+          exposes:{},
+          remotes: {
+            dashboard: 'dashboard@http://localhost:3003/_next/static/chunks/remoteEntry.js', // URL correta para o remoteEntry.js
+          },
+          shared: ['react', 'react-dom', 'react/jsx-dev-runtime'], // Dependências compartilhadas
+        })
+      );
+    }
     return config;
   },
-}
-
-module.exports = nextConfig
+  devServer: {
+    port: 3001, // Porta da aplicação consumidora
+    hot: true,
+    headers: {
+      'Access-Control-Allow-Origin': '*', // Permitir o acesso entre diferentes origens
+    },
+  },
+};
