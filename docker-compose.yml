@@ -38,7 +38,7 @@ services:
       - /app/node_modules
     command: ["npx", "nodemon", "--watch", ".", "--ext", "js,json,tsx,ts", "--exec", "npm run dev"]
 
-    investment:
+  investment:
     build: ./investment
     container_name: investment
     ports:
