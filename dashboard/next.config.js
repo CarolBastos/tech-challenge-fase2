@@ -8,6 +8,7 @@ module.exports = {
       new NextFederationPlugin({
         name: 'dashboard',
         filename: "static/chunks/remoteEntry.js",
+        remotes: {Investment: "investment@http://localhost:8081/remoteEntry.js"}
       })
     );
 
