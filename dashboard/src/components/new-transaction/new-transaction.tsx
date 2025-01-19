@@ -3,6 +3,7 @@ import Image from "next/image";
 import { SelectOption, TransactionInput } from "./index";
 import { Transaction, TypesOfTransaction } from "@/interfaces";
 import Button from "../button/button";
+import AttachmentUploader from "../attachment-uploader/attachment-uploader";
 
 interface NewTransactionProps {
   balance: number ;
@@ -16,6 +17,7 @@ export default function NewTransaction({ updateBalance, updateStatement, balance
   const [transactionValue, setTransactionValue] = useState<string>("");
   const [hasError, setHasError] = useState(false);
   const [isValueRequired, setIsValueRequired] = useState(false);
+  const [file, setFile] = useState<string | null>(null);
 
   const handleToggle = () => setIsOpen((prev) => !prev);
 
@@ -74,6 +76,19 @@ export default function NewTransaction({ updateBalance, updateStatement, balance
     updateBalance(newBalance);
   }
 
+  const handleFileSelect = (file: File | null) => {
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const base64String = reader.result as string;
+      setFile(base64String);  
+    };
+
+    if (file) {
+      reader.readAsDataURL(file);
+    } else {
+      setFile("");
+    }
+  };
 
   const handleClick = async () => {
     if (!selectedValue) {
@@ -96,7 +111,8 @@ export default function NewTransaction({ updateBalance, updateStatement, balance
       const transaction = {
         amount: amount,
         description: descriptionHandler(selectedValue),
-        date: new Date().toISOString()
+        date: new Date().toISOString(),
+        anexo: file
       }
   
       try {
@@ -105,7 +121,7 @@ export default function NewTransaction({ updateBalance, updateStatement, balance
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(transaction),
+          body: JSON.stringify( transaction )
         });
   
         if (response.ok) {
@@ -114,6 +130,7 @@ export default function NewTransaction({ updateBalance, updateStatement, balance
           await handleBalance();
           setSelectedValue("");
           setTransactionValue("");
+          setFile("");
           updateStatement(newTransaction);
     
         } else {
@@ -181,6 +198,8 @@ export default function NewTransaction({ updateBalance, updateStatement, balance
           Este campo é obrigatório.
         </p>
       )}
+
+      <AttachmentUploader onFileSelect={handleFileSelect} />
 
       <div className="mt-8">
         <Button className="max-w-[9rem] md:max-w-[15.625rem] md:w-full relative z-20" text="Concluir transação" onClick={handleClick} />

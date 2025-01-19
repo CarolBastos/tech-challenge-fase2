@@ -35,6 +35,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         accountId: accountId,
         value: transaction.amount,
         type: transaction.description,
+        anexo: transaction.anexo
       };
 
       const response = await http.post(

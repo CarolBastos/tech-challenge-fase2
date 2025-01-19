@@ -14,6 +14,7 @@ export interface Transaction {
   description: TypesOfTransaction;
   amount: number;
   date: string;
+  anexo?: string;
 }
 
 export interface Statement {
