@@ -48,4 +48,4 @@ services:
     volumes:
       - ./investment:/app
       - /app/node_modules
-    command: ["npx", "nodemon", "--watch", ".", "--ext", "js,json,tsx,ts", "--exec", "npm run dev", "npm start"]
+    command: ["npx", "nodemon", "--watch", ".", "--ext", "js,json,tsx,ts", "--exec", "npm start"]
