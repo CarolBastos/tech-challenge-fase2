@@ -1,13 +1,4 @@
-import styles from "@/styles/Home.module.css";
-import { useRouter } from 'next/router';
-import WelcomeLayout from './Layout/WelcomeLayout';
-import dynamic from 'next/dynamic';
-import { Suspense } from "react";
-
-// Carregamento dinâmico do componente Dashboard
-const Dashboard = dynamic(() => import('dashboard/index'), {
-  ssr: false, // Desabilitar SSR se não precisar da renderização do lado servidor
-});
+import WelcomeLayout from "./Layout/WelcomeLayout";
 
 export default function Home() {
   const { pathname } = useRouter();

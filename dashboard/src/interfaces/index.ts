@@ -1,5 +1,5 @@
 export type User = {
-  id: number;
+  id: string;
   name: string;
   balance: number;
 };
@@ -28,4 +28,10 @@ export type UserLogin = {
   password: string;
   name: string;
   terms: boolean;
+};
+
+export type SearchTransaction = {
+  value: number,
+  description: string,
+  date: string
 };

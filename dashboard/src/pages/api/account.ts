@@ -1,22 +1,59 @@
-import type { NextApiRequest, NextApiResponse } from 'next'
-import { user } from "../../mocks/userAccount";
+import type { NextApiRequest, NextApiResponse } from 'next';
 import { User } from '@/interfaces';
+import { ResponseAccount } from '@/interfaces/response-account';
+import http from "@/http";
+import { serialize } from 'cookie';
 
-export default function handler(
+export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
   if (req.method === 'GET') {
-    const userAccount: User = user[0];
-    return res.status(200).json(userAccount);
+    try {
+
+      const apiUrl = process.env.API_URL || 'http://localhost:8080';
+
+      const response = await http.get<ResponseAccount>(`${apiUrl}/account`, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: req.headers.authorization,
+        },
+        withCredentials: true,
+      });
+
+      const account: ResponseAccount = response.data;
+
+      const result = response.data.result;
+      res.setHeader(
+        'Set-Cookie',
+        serialize('accountResult', JSON.stringify(result), {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === 'production',
+          sameSite: 'strict',
+          path: '/',
+          maxAge: 60 * 60 * 24, // 1 dia
+        })
+      );
+      
+      const userAccount: User[] = account.result.account.map((accountItem) => ({
+        id: accountItem.id,
+        name: account.result.cards.length > 0 ? account.result.cards[0].name : '',
+        balance: 200 //TODO: não existe o saldo nesse endpoint              
+      }));
+
+      return res.status(200).json(userAccount[0]);
+
+    } catch (error) {
+      console.error('Erro ao acessar a API externa', error);
+      return res.status(500).json({ message: 'Erro ao acessar os dados da conta' });
+    }
   }
 
   if (req.method === 'POST') {
     const { balance } = req.body;
-    user[0].balance = balance;
 
-    return res.status(201).json(user[0]);
+    return res.status(201).json({ message: 'Balance atualizado com sucesso!' });
   }
 
-  return res.status(405).json({ message: "Method Not Allowed" });
+  return res.status(405).json({ message: 'Method Not Allowed' });
 }

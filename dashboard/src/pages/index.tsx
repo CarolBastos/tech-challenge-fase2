@@ -5,20 +5,23 @@ import Header from '@/components/header/header';
 import Navbar from '@/components/navbar/navbar';
 import { NewTransaction } from '@/components/new-transaction';
 import useAccount from '@/hooks/useAccount';
-import { Transaction } from '@/interfaces';
+import { Transaction, TypesOfTransaction } from '@/interfaces';
 import { statement } from '@/mocks/statement';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import Image from 'next/image';
 import ClientStatement from '@/components/userStatement/userStatement';
+import InvestmentSummary from '@/components/Investments/InvestmentSummary';
 
 const LoggedInLayout: React.FC = () => {
   const { user, setUser } = useAccount();
-  const [transactions, setTransactions] = useState(statement?.transactions.slice().reverse());
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [allTransactionsLoaded, setAllTransactionsLoaded] = useState<boolean>(false);
+  const transactionsLoadInitially = 6;
 
-  // Monitora as mudanças no `statement` e atualiza `transactions`
-    useEffect(() => {
-        setTransactions(statement?.transactions.slice().reverse());
-    }, [statement]);
+  useEffect(() => {
+    setTransactions(statement.transactions.slice(0, transactionsLoadInitially));
+  }, [])
 
   const updateBalance = (transactionAmount: number): void => {
     if (user) {
@@ -32,9 +35,37 @@ const LoggedInLayout: React.FC = () => {
     }
   };
 
+  const handleScroll = useCallback((event: React.UIEvent<HTMLDivElement>) => {
+    const target = event.currentTarget;
+    const atBottom = target.scrollHeight - target.scrollTop <= target.clientHeight + 5;
+
+    if (atBottom && !loading && !allTransactionsLoaded) {
+      loadMoreTransactions();
+    }
+  }, [loading, allTransactionsLoaded]);
+
+  const loadMoreTransactions = useCallback(async () => {
+    setLoading(true);
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
+    const nextTransactions = statement.transactions.slice(
+      transactions.length,
+      transactions.length + transactionsLoadInitially
+    );
+
+    if (nextTransactions.length > 0) {
+      setTransactions((prev) => [...prev, ...nextTransactions]);
+    } else {
+      setAllTransactionsLoaded(true);
+    }
+
+    setLoading(false);
+  }, [transactions.length, transactionsLoadInitially]);
+
   return (
     <div>
       <Header userName={user?.name} />
+      
       <main className="w-full bg-tertiary-400 max-[1023px]:pb-9"> 
         <section className="max-w-sm h-full flex flex-col mx-auto pt-6 md:max-w-md gap-8 lg:max-w-lg lg:flex-row lg:px-6">
           <div className="main-logged__side-menu">
@@ -43,6 +74,7 @@ const LoggedInLayout: React.FC = () => {
 
           <div className="w-full flex flex-col gap-6 pb-6">
             <Balance user={user} />
+            <InvestmentSummary />
             <NewTransaction updateBalance={updateBalance} updateStatement={updateStatement}balance={user ? user.balance : 0}/>
           </div>
 
@@ -60,8 +92,20 @@ const LoggedInLayout: React.FC = () => {
                 </button>
               </div>
             </div>
-            <div className='flex flex-col gap-6 h-[500px] overflow-y-auto pr-2 custom-scroll'>
-              <ClientStatement transactions={transactions}/>
+            <div className='flex flex-col gap-6 overflow-y-auto pr-2 custom-scroll' onScroll={handleScroll} >
+              <ClientStatement 
+                transactions={transactions} 
+              />
+              {loading && (
+                <p className="text-center text-sm text-gray-500 mt-4 animate-pulse">
+                  Carregando mais transações...
+                </p>
+              )}
+              {allTransactionsLoaded && (
+                <p className="text-center text-sm text-gray-500 mt-4">
+                  Não há mais transações a carregar.
+                </p>
+              )}
             </div>
           </div>
         </section>

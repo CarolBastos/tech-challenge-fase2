@@ -31,10 +31,11 @@ export const LoginForm = ({ viewLoginForm, onClose }: ILoginForm) => {
     setMessage("");
 
     http.post('/user/auth', {email, password}).then((response)=>{
-      setMessage("Login realizado com sucesso!");
       setEmail("");
       setPassword("");
-      localStorage.setItem('token', response.data.result.token);
+      document.cookie = "auth_token=" + response.data.result.token + "; path=/; domain=localhost; samesite=lax";
+      //TODO: refatorar url após deploy para ambiente
+      window.location.href = 'http://localhost:3003/';
       }).catch((error) => {
         setMessage(error.response?.data?.message || "Ocorreu um erro ao realizar o login.");
       }    
