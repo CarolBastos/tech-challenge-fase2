@@ -1,20 +1,20 @@
-import { Suspense } from "react";
-import WelcomeLayout from "./Layout/WelcomeLayout";
-import { HomeProps } from "./interfaces/welcome";
+import WelcomeLayout from "@/components/Layout/WelcomeLayout";
+import HomeProps from "@/interfaces";
+import { GetStaticProps } from "next";
 
-export default function Home({ advantages }: HomeProps) {
+const HomePage = ({ advantages }: HomeProps) => {
+  if (!Array.isArray(advantages)) {
+    return <div>Erro ao carregar vantagens. Tente novamente mais tarde.</div>;
+  }
+
   return (
-    <>
-      <main className="w-full bg-tertiary-400 max-[1023px]:pb-9">
-        <Suspense fallback={<div>Loading...</div>}>
-          <WelcomeLayout advantages={advantages} />
-        </Suspense>
-      </main>
-    </>
+    <main className="w-full bg-tertiary-400 max-[1023px]:pb-9">
+      <WelcomeLayout advantages={advantages} />
+    </main>
   );
-}
+};
 
-export const getStaticProps = async () => {
+export const getStaticProps: GetStaticProps = async () => {
   const advantages = [
     {
       title: "Conta e cartão gratuitos",
@@ -42,9 +42,17 @@ export const getStaticProps = async () => {
     },
   ];
 
+  if (!Array.isArray(advantages) || advantages.length === 0) {
+    return {
+      notFound: true,
+    };
+  }
+
   return {
     props: {
       advantages,
     },
   };
 };
+
+export default HomePage;
