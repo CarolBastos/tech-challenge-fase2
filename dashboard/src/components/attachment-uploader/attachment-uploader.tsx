@@ -16,7 +16,6 @@ const AttachmentUploader: React.FC<AttachmentUploaderProps> = ({ onFileSelect })
       setFileName(file.name);
       onFileSelect(file);
     } else {
-        console.log("limpou")
       setFileName(null);
       onFileSelect(null);
     }

@@ -12,10 +12,11 @@ import Image from 'next/image';
 import ClientStatement from '@/components/userStatement/userStatement';
 import { Provider } from 'react-redux';
 import store from '@/store';
+import useStatement from '@/hooks/useStatement';
 
 const LoggedInLayout: React.FC = () => {
   const { user, setUser } = useAccount();
-  const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const {transactions, setTransactions} = useStatement();
   const [loading, setLoading] = useState<boolean>(false);
   const [allTransactionsLoaded, setAllTransactionsLoaded] = useState<boolean>(false);
   const transactionsLoadInitially = 6;
