@@ -3,16 +3,16 @@
 import React, { FormEvent, useState } from "react";
 
 import Image from "next/image";
-import { InputForm } from "../generics/InputForm";
 import { useRouter } from "next/navigation";
 import http from "@/http";
+import InputForm from "@/components/generics/InputForm";
 
 interface ILoginForm {
   viewLoginForm: boolean;
   onClose: (value: boolean) => void;
 }
 
-export const LoginForm = ({ viewLoginForm, onClose }: ILoginForm) => {
+const LoginForm = ({ viewLoginForm, onClose }: ILoginForm) => {
   const router = useRouter();
 
   const [email, setEmail] = useState<string>("");
@@ -119,3 +119,5 @@ export const LoginForm = ({ viewLoginForm, onClose }: ILoginForm) => {
     </>
   );
 };
+
+export default LoginForm;

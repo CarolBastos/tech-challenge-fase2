@@ -3,9 +3,9 @@
 import React, { FormEvent, useState } from "react";
 
 import Image from "next/image";
-import { InputForm } from "../generics/InputForm";
 import { useRouter } from "next/navigation";
 import http from "@/http";
+import InputForm from "../generics/InputForm";
 
 interface IUserRegisterForm {
   viewUserRegisterForm: boolean;
@@ -17,7 +17,7 @@ interface IResponse {
   message: string;
 }
 
-export const UserRegisterForm = ({
+const UserRegisterForm = ({
   viewUserRegisterForm,
   onClose,
 }: IUserRegisterForm) => {
@@ -176,3 +176,5 @@ export const UserRegisterForm = ({
     </>
   );
 };
+
+export default UserRegisterForm;
