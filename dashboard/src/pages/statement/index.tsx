@@ -5,23 +5,22 @@ import Navbar from '@/components/navbar/navbar';
 import { StatementArea } from '@/components/statement-area';
 import useAccount from '@/hooks/useAccount';
 import { SearchTransaction, Transaction, TypesOfTransaction } from '@/interfaces';
-import { statement } from '@/mocks/statement';
 import React, { useCallback, useEffect, useState } from 'react';
 import Image from 'next/image';
 import ClientStatement from '@/components/userStatement/userStatement';
 import { descriptionHandler, formattedDate } from '@/utils';
+import useStatement from '@/hooks/useStatement';
 
 const LoggedInLayout: React.FC = () => {
   const { user, setUser } = useAccount();
-  const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const {transactions, setTransactions} = useStatement();
   const [filteredTransactions, setFilteredTransactions] = useState<Transaction[]>(transactions);
   const [loading, setLoading] = useState<boolean>(false);
   const [allTransactionsLoaded, setAllTransactionsLoaded] = useState<boolean>(false);
   const transactionsLoadInitially = 6;
 
   useEffect(() => {
-    setTransactions(statement.transactions.slice(0, transactionsLoadInitially));
-    setFilteredTransactions(statement.transactions.slice(0, transactionsLoadInitially))
+    setFilteredTransactions(transactions.slice(0, transactionsLoadInitially))
   }, [])
 
   const handleScroll = useCallback((event: React.UIEvent<HTMLDivElement>) => {
@@ -37,7 +36,7 @@ const LoggedInLayout: React.FC = () => {
     setLoading(true);
     await new Promise((resolve) => setTimeout(resolve, 1000));
 
-    const nextTransactions = statement.transactions.slice(
+    const nextTransactions = transactions.slice(
       transactions.length,
       transactions.length + transactionsLoadInitially
     );

@@ -9,7 +9,6 @@ const useAccount = () => {
     async function fetchUserData() {
       try {
         const response = await fetch('/api/account');
-        console.log("response useAccount", response)
         
         if (!response.ok) {
           throw new Error(`Erro HTTP: ${response.status}`);

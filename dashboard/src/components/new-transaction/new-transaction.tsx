@@ -31,7 +31,6 @@ export default function NewTransaction({ updateBalance, updateStatement, balance
 
   const transactionsTypes = useSelector((state) => state.transactionTypes.types);
   const transactionsNames = useSelector((state) => state.transactionsName.names);
-  console.log(transactionsTypes);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
@@ -75,7 +74,6 @@ export default function NewTransaction({ updateBalance, updateStatement, balance
         newBalance = balance - amount; 
       } else {
         newBalance = balance;
-        console.log("não foi possivel retirar o saldo", newBalance)
       }
     }
 
@@ -132,7 +130,6 @@ export default function NewTransaction({ updateBalance, updateStatement, balance
   
         if (response.ok) {
           const newTransaction = await response.json();
-          console.log("Transaction created:", newTransaction);
           await handleBalance();
           setSelectedValue("");
           setTransactionValue("");

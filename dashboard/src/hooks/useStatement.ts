@@ -1,8 +1,8 @@
-import { Statement } from "@/interfaces";
+import { Transaction } from "@/interfaces";
 import { useEffect, useState } from "react";
 
 const useStatement = () => {
-  const [data, setData] = useState<Statement | null>(null);
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -13,8 +13,8 @@ const useStatement = () => {
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
-        const result: Statement = await response.json();
-        setData(result);
+        const result: Transaction[] = await response.json();
+        setTransactions(result);
       } catch (err) {
         if (err instanceof Error) {
           setError(err.message);
@@ -29,7 +29,7 @@ const useStatement = () => {
     fetchData();
   }, []);
 
-  return { data, loading, error };
+  return { transactions, setTransactions, loading, error };
 };
 
 export default useStatement;
