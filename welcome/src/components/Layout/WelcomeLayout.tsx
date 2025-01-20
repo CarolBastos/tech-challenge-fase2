@@ -2,14 +2,15 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
-import LoginForm from "../login/LoginForm";
-import UserRegisterForm from "../user-register-form/UserRegisterForm";
+
 import WelcomeCard from "../card/WelcomeCard";
 import WelcomeFooter from "../footer/welcome-footer";
 import WelcomeHeader from "../header/welcome-header";
-import { WelcomeLayoutProps } from "../interfaces/welcome";
+import LoginForm from "../login/LoginForm";
+import UserRegisterForm from "../user-register-form/UserRegisterForm";
+import HomeProps from "@/interfaces";
 
-const WelcomeLayout: React.FC<WelcomeLayoutProps> = ({ advantages }) => {
+const WelcomeLayout: React.FC<HomeProps> = ({ advantages }) => {
   const [viewLoginForm, setViewLoginForm] = useState(false);
   const [viewUserRegisterForm, setUserRegisterForm] = useState(false);
 
