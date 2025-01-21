@@ -1,8 +1,11 @@
-import { SetStateAction, useState } from "react";
-import { navItems } from "./config";
+import { SetStateAction, useEffect, useState } from "react";
+
 import Image from "next/image";
+import { navItems } from "./config";
+import { useRouter } from "next/router";
 
 export default function MobileNavbar() {
+  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [activeLink, setActiveLink] = useState(navItems[0].link);
 
@@ -14,6 +17,16 @@ export default function MobileNavbar() {
     setActiveLink(link);
     setIsOpen(false);
   };
+
+    useEffect(() => {
+      const currentPath = router.pathname;
+      const currentItem = navItems.find(item => `/${item.link}` === currentPath);
+      if (currentItem) {
+        setActiveLink(currentItem.link);
+      }
+    }, [router.pathname]);
+  
+
 
   return (
     <div>
@@ -45,7 +58,7 @@ export default function MobileNavbar() {
             {navItems.map((item, index) => (
               <a
                 key={item.link}
-                href={`#${item.link}`}
+                href={item.link}
                 className={`block py-4 text-md text-black hover:bg-gray-200 text-center w-full ${
                   activeLink === item.link
                     ? "text-tertiary-500 font-bold border-b-2 border-tertiary-500"
