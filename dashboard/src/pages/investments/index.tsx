@@ -9,12 +9,13 @@ import { statement } from '@/mocks/statement';
 import React, { useCallback, useEffect, useState } from 'react';
 import Image from 'next/image';
 import ClientStatement from '@/components/userStatement/userStatement';
+import useStatement from '@/hooks/useStatement';
 
 const InvestmentCard = React.lazy(() => import('Investment/InvestmentSummary'));
 
 const LoggedInLayout: React.FC = () => {
   const { user, setUser } = useAccount();
-  const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const {transactions, setTransactions} = useStatement();
   const [loading, setLoading] = useState<boolean>(false);
   const [allTransactionsLoaded, setAllTransactionsLoaded] = useState<boolean>(false);
   const transactionsLoadInitially = 6;
@@ -24,7 +25,7 @@ const LoggedInLayout: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    setTransactions(statement.transactions.slice(0, transactionsLoadInitially));
+    setTransactions(transactions.slice(0, transactionsLoadInitially));
   }, [])
 
   const handleScroll = useCallback((event: React.UIEvent<HTMLDivElement>) => {
