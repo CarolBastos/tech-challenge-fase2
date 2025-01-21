@@ -10,6 +10,7 @@ import Image from 'next/image';
 import ClientStatement from '@/components/userStatement/userStatement';
 import { descriptionHandler, formattedDate } from '@/utils';
 import useStatement from '@/hooks/useStatement';
+import { statement } from '@/mocks/statement';
 
 const LoggedInLayout: React.FC = () => {
   const { user, setUser } = useAccount();
@@ -20,8 +21,11 @@ const LoggedInLayout: React.FC = () => {
   const transactionsLoadInitially = 6;
 
   useEffect(() => {
-    setFilteredTransactions(transactions.slice(0, transactionsLoadInitially))
+    setTransactions(transactions.slice(0, transactionsLoadInitially));
+    setFilteredTransactions(transactions)
   }, [])
+
+  
 
   const handleScroll = useCallback((event: React.UIEvent<HTMLDivElement>) => {
     const target = event.currentTarget;
@@ -113,7 +117,7 @@ const LoggedInLayout: React.FC = () => {
             </div>
             <div className='flex flex-col gap-6 overflow-y-auto pr-2 custom-scroll' onScroll={handleScroll} >
               <ClientStatement
-                transactions={filteredTransactions}
+                transactions={filteredTransactions.length == 0 ? transactions : filteredTransactions}
               />
               {loading && (
                 <p className="text-center text-sm text-gray-500 mt-4 animate-pulse">
