@@ -47,8 +47,8 @@ class AccountController {
 
   async createTransaction(req, res) {
     const { saveTransaction, transactionRepository } = this.di
-    const { accountId, value, type, from, to } = req.body
-    const transactionDTO = new TransactionDTO({ accountId, value, from, to,  type, date: new Date() })
+    const { accountId, value, type, from, to, anexo } = req.body
+    const transactionDTO = new TransactionDTO({ accountId, value, from, to, anexo, type, date: new Date() })
 
     const transaction = await saveTransaction({ transaction: transactionDTO, repository: transactionRepository })
     
